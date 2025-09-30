@@ -23,7 +23,7 @@ ipynb_checkpoints/
 
 # Config y secretos
 .env
-.env.*
+.env.*      # cualquier .env.local, .env.prod, etc.
 !.env.example
 
 # Alembic / SQL
@@ -61,5 +61,12 @@ Thumbs.db
 docker-data/
 **/tmp/
 
-# === Java / Spring Boot generado ===
+# === Java / Spring Boot generado (desde exporters) ===
 spring_project/
+exporters/output/
+
+# === Otros archivos innecesarios ===
+*.iml
+*.bak
+*.swp
+*.swo
