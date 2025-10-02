@@ -5,6 +5,7 @@ import sys
 import csv
 import uuid
 from typing import Optional
+from app.db import SessionLocal
 
 # --- Agregar backend al sys.path para importar app.* ---
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
