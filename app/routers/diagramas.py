@@ -80,17 +80,34 @@ def list_diagrams(
     return DiagramList(items=items, page=page, limit=limit, total=total)
 
 
+# @router.get("/{diagram_id}", response_model=DiagramOut)
+# def get_diagram(
+#     diagram_id: UUID,
+#     db: Session = Depends(get_db),
+#     me: User = Depends(get_current_user),
+# ):
+#     log.info(f"🔍 Obtener diagrama -> user_id={me.id}, diagram_id={diagram_id}")
+#     d = db.query(Diagram).filter(Diagram.id == diagram_id, Diagram.owner_id == me.id).one_or_none()
+#     if not d:
+#         log.warning(f"⚠️ Diagrama no encontrado -> diagram_id={diagram_id}, user_id={me.id}")
+#         raise HTTPException(404, "Diagrama no encontrado")
+#     log.debug(f"✅ Diagrama encontrado -> id={d.id}, title={d.title}")
+#     return d
 @router.get("/{diagram_id}", response_model=DiagramOut)
 def get_diagram(
     diagram_id: UUID,
     db: Session = Depends(get_db),
     me: User = Depends(get_current_user),
 ):
-    log.info(f"🔍 Obtener diagrama -> user_id={me.id}, diagram_id={diagram_id}")
-    d = db.query(Diagram).filter(Diagram.id == diagram_id, Diagram.owner_id == me.id).one_or_none()
+    log.info(f"🔍 Obtener diagrama (modo colaborativo) -> user_id={me.id}, diagram_id={diagram_id}")
+
+    # ✅ Ahora permite acceder a cualquier diagrama, sin importar el dueño
+    d = db.query(Diagram).filter(Diagram.id == diagram_id).one_or_none()
+
     if not d:
-        log.warning(f"⚠️ Diagrama no encontrado -> diagram_id={diagram_id}, user_id={me.id}")
+        log.warning(f"⚠️ Diagrama no encontrado -> diagram_id={diagram_id}")
         raise HTTPException(404, "Diagrama no encontrado")
+
     log.debug(f"✅ Diagrama encontrado -> id={d.id}, title={d.title}")
     return d
 
