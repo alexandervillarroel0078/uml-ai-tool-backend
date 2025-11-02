@@ -38,6 +38,24 @@ def create_diagram(
     return d
 
 
+# @router.get("", response_model=DiagramList)
+# def list_diagrams(
+#     page: int = 1,
+#     limit: int = 20,
+#     db: Session = Depends(get_db),
+#     me: User = Depends(get_current_user),
+# ):
+#     if page < 1: page = 1
+#     if limit < 1: limit = 20
+
+#     log.info(f"📥 Listar diagramas -> user_id={me.id}, page={page}, limit={limit}")
+
+#     q = db.query(Diagram).filter(Diagram.owner_id == me.id).order_by(Diagram.updated_at.desc())
+#     total = q.count()
+#     items = q.offset((page - 1) * limit).limit(limit).all()
+
+#     log.debug(f"✅ {len(items)} diagramas obtenidos de un total de {total}")
+#     return DiagramList(items=items, page=page, limit=limit, total=total)
 @router.get("", response_model=DiagramList)
 def list_diagrams(
     page: int = 1,
@@ -45,12 +63,16 @@ def list_diagrams(
     db: Session = Depends(get_db),
     me: User = Depends(get_current_user),
 ):
-    if page < 1: page = 1
-    if limit < 1: limit = 20
+    if page < 1:
+        page = 1
+    if limit < 1:
+        limit = 20
 
-    log.info(f"📥 Listar diagramas -> user_id={me.id}, page={page}, limit={limit}")
+    log.info(f"📥 Listar diagramas (modo colaborativo) -> user_id={me.id}, page={page}, limit={limit}")
 
-    q = db.query(Diagram).filter(Diagram.owner_id == me.id).order_by(Diagram.updated_at.desc())
+    # ✅ Mostrar todos los diagramas, sin importar el usuario propietario
+    q = db.query(Diagram).order_by(Diagram.updated_at.desc())
+
     total = q.count()
     items = q.offset((page - 1) * limit).limit(limit).all()
 
