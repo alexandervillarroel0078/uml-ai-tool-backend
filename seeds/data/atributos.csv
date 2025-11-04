@@ -1,33 +1,33 @@
 diagram_title,clase_nombre,nombre,tipo,requerido,es_primaria
-ERP Empresarial - Relaciones completas,Usuario,id,UUID,True,True
-ERP Empresarial - Relaciones completas,Usuario,nombre,String,True,False
-ERP Empresarial - Relaciones completas,Usuario,email,String,True,False
-ERP Empresarial - Relaciones completas,Usuario,password,String,True,False
+sistema gestion empresarial,Usuario,id,UUID,True,True
+sistema gestion empresarial,Usuario,nombre,String,True,False
+sistema gestion empresarial,Usuario,email,String,True,False
+sistema gestion empresarial,Usuario,password,String,True,False
 
-ERP Empresarial - Relaciones completas,Empleado,id,UUID,True,True
-ERP Empresarial - Relaciones completas,Empleado,cargo,String,True,False
-ERP Empresarial - Relaciones completas,Empleado,salario,Decimal,True,False
-ERP Empresarial - Relaciones completas,Empleado,fechaContratacion,Date,False,False
+sistema gestion empresarial,Empleado,id,UUID,True,True
+sistema gestion empresarial,Empleado,cargo,String,True,False
+sistema gestion empresarial,Empleado,salario,Decimal,True,False
+sistema gestion empresarial,Empleado,fechaContratacion,Date,False,False
 
-ERP Empresarial - Relaciones completas,Cliente,id,UUID,True,True
-ERP Empresarial - Relaciones completas,Cliente,nombreEmpresa,String,True,False
-ERP Empresarial - Relaciones completas,Cliente,telefono,String,False,False
-ERP Empresarial - Relaciones completas,Cliente,direccion,String,False,False
+sistema gestion empresarial,Cliente,id,UUID,True,True
+sistema gestion empresarial,Cliente,nombreEmpresa,String,True,False
+sistema gestion empresarial,Cliente,telefono,String,False,False
+sistema gestion empresarial,Cliente,direccion,String,False,False
 
-ERP Empresarial - Relaciones completas,Departamento,id,UUID,True,True
-ERP Empresarial - Relaciones completas,Departamento,nombre,String,True,False
-ERP Empresarial - Relaciones completas,Departamento,ubicacion,String,False,False
+sistema gestion empresarial,Departamento,id,UUID,True,True
+sistema gestion empresarial,Departamento,nombre,String,True,False
+sistema gestion empresarial,Departamento,ubicacion,String,False,False
 
-ERP Empresarial - Relaciones completas,Producto,id,UUID,True,True
-ERP Empresarial - Relaciones completas,Producto,nombre,String,True,False
-ERP Empresarial - Relaciones completas,Producto,precio,Decimal,True,False
-ERP Empresarial - Relaciones completas,Producto,stock,Integer,True,False
+sistema gestion empresarial,Producto,id,UUID,True,True
+sistema gestion empresarial,Producto,nombre,String,True,False
+sistema gestion empresarial,Producto,precio,Decimal,True,False
+sistema gestion empresarial,Producto,stock,Integer,True,False
 
-ERP Empresarial - Relaciones completas,Pedido,id,UUID,True,True
-ERP Empresarial - Relaciones completas,Pedido,fecha,Date,True,False
-ERP Empresarial - Relaciones completas,Pedido,estado,String,True,False
-ERP Empresarial - Relaciones completas,Pedido,total,Decimal,True,False
+sistema gestion empresarial,Pedido,id,UUID,True,True
+sistema gestion empresarial,Pedido,fecha,Date,True,False
+sistema gestion empresarial,Pedido,estado,String,True,False
+sistema gestion empresarial,Pedido,total,Decimal,True,False
 
-ERP Empresarial - Relaciones completas,DetallePedido,id,UUID,True,True
-ERP Empresarial - Relaciones completas,DetallePedido,cantidad,Integer,True,False
-ERP Empresarial - Relaciones completas,DetallePedido,subtotal,Decimal,True,False
+sistema gestion empresarial,DetallePedido,id,UUID,True,True
+sistema gestion empresarial,DetallePedido,cantidad,Integer,True,False
+sistema gestion empresarial,DetallePedido,subtotal,Decimal,True,False
