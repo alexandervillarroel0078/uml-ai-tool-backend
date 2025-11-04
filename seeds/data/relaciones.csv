@@ -1,12 +1,12 @@
-diagram_title,clase_origen,clase_destino,tipo,etiqueta,mult_origen_min,mult_origen_max,mult_destino_min,mult_destino_max
-sistema gestion empresarial,Usuario,Empleado,INHERITANCE,hereda,1,1,1,1
-sistema gestion empresarial,Usuario,Cliente,INHERITANCE,hereda,1,1,1,1
-sistema gestion empresarial,Usuario,Rol,ASSOCIATION,tiene,0,*,0,*
-sistema gestion empresarial,Departamento,Empleado,AGGREGATION,empleados,1,1,1,*
-sistema gestion empresarial,Empleado,Empleado,ASSOCIATION,jefe/subordinados,0,1,0,*
-sistema gestion empresarial,Proyecto,Proyecto,ASSOCIATION,relacionado_con,0,*,0,*
-sistema gestion empresarial,Pedido,DetallePedido,COMPOSITION,detalles,1,1,1,*
-sistema gestion empresarial,Cliente,Pedido,ASSOCIATION,realiza,1,1,0,*
-sistema gestion empresarial,DetallePedido,Producto,ASSOCIATION,producto,0,*,1,1
-sistema gestion empresarial,Factura,Pedido,DEPENDENCY,usa,1,1,1,1
-sistema gestion empresarial,Empleado,Proyecto,ASSOCIATION,participa_en,0,*,0,*
+id,diagram_title,clase_origen,clase_destino,tipo,etiqueta,mult_origen_min,mult_origen_max,mult_destino_min,mult_destino_max,src_anchor,dst_anchor
+a57cf646-ea35-43d6-8360-776a4fe2ad5f,sistema gestion empresarial,Empleado,Departamento,AGGREGATION,empleados,1,1,1,*,top,bottom
+43b31719-9a7c-48c5-b291-5fece5adf9e7,sistema gestion empresarial,Empleado,Empleado,ASSOCIATION,jefe/subordinados,0,1,0,*,right,top
+3e384606-f79a-4ac8-b41a-9a3214964ff1,sistema gestion empresarial,Proyecto,Proyecto,ASSOCIATION,relacionado_con,0,*,0,*,right,bottom
+b6b0382a-4ff6-4645-8b1e-1569d8d56c38,sistema gestion empresarial,DetallePedido,Pedido,COMPOSITION,detalles,1,1,1,*,top,bottom
+22d0c173-4801-4e64-a260-6ad38c461aaa,sistema gestion empresarial,Cliente,Pedido,ASSOCIATION,realiza,1,1,0,*,right,left
+c1b3864e-472a-4641-a790-94961e980999,sistema gestion empresarial,DetallePedido,Producto,ASSOCIATION,producto,0,*,1,1,left,right
+0f22c517-e64b-48ca-a16c-2ba575d209ab,sistema gestion empresarial,Factura,Pedido,DEPENDENCY,usa,1,1,1,1,right,top
+52337264-cfe3-447e-afeb-c52bf13b33a2,sistema gestion empresarial,Empleado,Proyecto,ASSOCIATION,participa_en,0,*,0,*,bottom,top
+1b6869e9-c50c-43b9-8d45-6c6655b12109,sistema gestion empresarial,Empleado,Usuario,INHERITANCE,hereda,1,1,1,1,top,bottom
+7781a317-8db0-45ca-8c4c-fa34831c8af5,sistema gestion empresarial,Cliente,Usuario,INHERITANCE,hereda,1,1,1,1,top,bottom
+01a38ab8-fa92-41c1-b322-47c96f9299b3,sistema gestion empresarial,Usuario,Rol,ASSOCIATION,tiene,0,*,0,*,right,left

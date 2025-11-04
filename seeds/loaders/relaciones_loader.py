@@ -1,6 +1,6 @@
 import os
 from app.models.uml import Diagram, Clase, Relacion, RelType
-from seeds.utils import norm, gen_uuid, _csv_open, bool_from_csv
+from seeds.utils import norm, gen_uuid, _csv_open
 
 
 def load_relaciones(db, data_dir):
@@ -20,6 +20,10 @@ def load_relaciones(db, data_dir):
         tipo_str = norm(row.get("tipo"))
         etiqueta = norm(row.get("etiqueta"))
 
+        # 🧩 Anchors (direcciones visuales)
+        src_anchor = norm(row.get("src_anchor") or "right")
+        dst_anchor = norm(row.get("dst_anchor") or "left")
+
         if not (diagram_title and clase_origen and clase_destino and tipo_str):
             print("[rels] fila inválida -> skip")
             continue
@@ -29,21 +33,25 @@ def load_relaciones(db, data_dir):
             print(f"[rels] ! diagrama no encontrado: {diagram_title} -> skip")
             continue
 
-        origen = db.query(Clase).filter(Clase.diagram_id == diagram.id, Clase.nombre == clase_origen).one_or_none()
-        destino = db.query(Clase).filter(Clase.diagram_id == diagram.id, Clase.nombre == clase_destino).one_or_none()
+        origen = db.query(Clase).filter(
+            Clase.diagram_id == diagram.id, Clase.nombre == clase_origen
+        ).one_or_none()
+
+        destino = db.query(Clase).filter(
+            Clase.diagram_id == diagram.id, Clase.nombre == clase_destino
+        ).one_or_none()
 
         if not origen or not destino:
             print(f"[rels] ! clase origen/destino no encontrada: {clase_origen} -> {clase_destino} -> skip")
             continue
 
-        tipo_enum = None
         try:
             tipo_enum = RelType[tipo_str.upper()]
         except KeyError:
             print(f"[rels] ! tipo inválido: {tipo_str}")
             continue
 
-        # Buscar si ya existe
+        # 🔎 Buscar si ya existe
         rel = db.query(Relacion).filter(
             Relacion.diagram_id == diagram.id,
             Relacion.origen_id == origen.id,
@@ -63,10 +71,12 @@ def load_relaciones(db, data_dir):
             if rel.mult_origen_max != mult_origen_max: rel.mult_origen_max = mult_origen_max; changed = True
             if rel.mult_destino_min != mult_destino_min: rel.mult_destino_min = mult_destino_min; changed = True
             if rel.mult_destino_max != mult_destino_max: rel.mult_destino_max = mult_destino_max; changed = True
+            if rel.src_anchor != src_anchor: rel.src_anchor = src_anchor; changed = True
+            if rel.dst_anchor != dst_anchor: rel.dst_anchor = dst_anchor; changed = True
 
             if changed:
                 updated += 1
-                print(f"[rels] ↺ actualizado: {clase_origen} -> {clase_destino} ({tipo_str})")
+                print(f"[rels] ↺ actualizado: {clase_origen} -> {clase_destino} ({tipo_str}) [{src_anchor}→{dst_anchor}]")
             else:
                 print(f"[rels] = sin cambios: {clase_origen} -> {clase_destino}")
         else:
@@ -81,9 +91,11 @@ def load_relaciones(db, data_dir):
                 mult_origen_max=mult_origen_max,
                 mult_destino_min=mult_destino_min,
                 mult_destino_max=mult_destino_max,
+                src_anchor=src_anchor,
+                dst_anchor=dst_anchor,
             ))
             created += 1
-            print(f"[rels] + creada: {clase_origen} -> {clase_destino} ({tipo_str})")
+            print(f"[rels] + creada: {clase_origen} -> {clase_destino} ({tipo_str}) [{src_anchor}→{dst_anchor}]")
 
     print(f"[rels] creado={created}, actualizado={updated}")
 

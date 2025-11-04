@@ -31,3 +31,18 @@ sistema gestion empresarial,Pedido,total,Decimal,True,False
 sistema gestion empresarial,DetallePedido,id,UUID,True,True
 sistema gestion empresarial,DetallePedido,cantidad,Integer,True,False
 sistema gestion empresarial,DetallePedido,subtotal,Decimal,True,False
+
+sistema gestion empresarial,Rol,id,UUID,True,True
+sistema gestion empresarial,Rol,nombre,String,True,False
+sistema gestion empresarial,Rol,descripcion,String,False,False
+
+sistema gestion empresarial,Proyecto,id,UUID,True,True
+sistema gestion empresarial,Proyecto,nombre,String,True,False
+sistema gestion empresarial,Proyecto,fechaInicio,Date,True,False
+sistema gestion empresarial,Proyecto,fechaFin,Date,False,False
+sistema gestion empresarial,Proyecto,presupuesto,Decimal,False,False
+
+sistema gestion empresarial,Factura,id,UUID,True,True
+sistema gestion empresarial,Factura,fechaEmision,Date,True,False
+sistema gestion empresarial,Factura,montoTotal,Decimal,True,False
+sistema gestion empresarial,Factura,metodoPago,String,True,False

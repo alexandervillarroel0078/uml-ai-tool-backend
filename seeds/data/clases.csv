@@ -1,11 +1,11 @@
 id,diagram_title,nombre,x_grid,y_grid,w_grid,h_grid,z_index
-00000000-0000-0000-0000-00000000b006,sistema gestion empresarial,Producto,53,53,12,10,1
-00000000-0000-0000-0000-00000000b001,sistema gestion empresarial,Usuario,26,0,12,10,1
-00000000-0000-0000-0000-00000000b004,sistema gestion empresarial,Cliente,26,13,12,10,1
-00000000-0000-0000-0000-00000000b002,sistema gestion empresarial,Rol,50,0,12,10,1
-00000000-0000-0000-0000-00000000b009,sistema gestion empresarial,Factura,53,23,12,10,1
-00000000-0000-0000-0000-00000000b007,sistema gestion empresarial,Pedido,53,33,12,10,1
-00000000-0000-0000-0000-00000000b008,sistema gestion empresarial,DetallePedido,53,43,12,10,1
-00000000-0000-0000-0000-00000000b005,sistema gestion empresarial,Departamento,1,1,12,10,1
-00000000-0000-0000-0000-00000000b003,sistema gestion empresarial,Empleado,1,13,12,10,1
-00000000-0000-0000-0000-00000000b010,sistema gestion empresarial,Proyecto,1,25,12,10,1
+00000000-0000-0000-0000-00000000b009,sistema gestion empresarial,Factura,53,13,12,10,1
+00000000-0000-0000-0000-00000000b007,sistema gestion empresarial,Pedido,77,22,12,13,1
+00000000-0000-0000-0000-00000000b008,sistema gestion empresarial,DetallePedido,77,45,12,12,1
+00000000-0000-0000-0000-00000000b006,sistema gestion empresarial,Producto,47,45,12,13,1
+00000000-0000-0000-0000-00000000b003,sistema gestion empresarial,Empleado,9,19,12,13,1
+00000000-0000-0000-0000-00000000b010,sistema gestion empresarial,Proyecto,9,40,12,15,1
+00000000-0000-0000-0000-00000000b005,sistema gestion empresarial,Departamento,9,1,12,12,1
+00000000-0000-0000-0000-00000000b004,sistema gestion empresarial,Cliente,32,23,12,13,1
+00000000-0000-0000-0000-00000000b001,sistema gestion empresarial,Usuario,32,0,12,13,1
+00000000-0000-0000-0000-00000000b002,sistema gestion empresarial,Rol,62,0,12,12,1

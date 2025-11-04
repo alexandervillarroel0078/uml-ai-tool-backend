@@ -16,8 +16,9 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/diagrams", tags=["attributes"])
 
-
+# ===============================
 # 🔹 Listar atributos
+# ===============================
 @router.get("/classes/{class_id}/attributes", response_model=list[AtributoOut])
 def list_attributes(
     class_id: UUID,
@@ -31,16 +32,18 @@ def list_attributes(
     return [
         AtributoOut(
             id=i.id,
-            name=i.nombre,
-            type=i.tipo,
-            required=i.requerido,
-            es_identificador=i.es_identificador
+            nombre=i.nombre,
+            tipo=i.tipo,
+            requerido=i.requerido,
+            es_primaria=i.es_primaria
         )
         for i in items
     ]
 
 
+# ===============================
 # 🔹 Crear atributo
+# ===============================
 @router.post("/classes/{class_id}/attributes", response_model=AtributoOut, status_code=status.HTTP_201_CREATED)
 async def create_attribute(
     class_id: UUID,
@@ -56,7 +59,7 @@ async def create_attribute(
             nombre=body.name,
             tipo=body.type,
             requerido=bool(body.required),
-            es_identificador=bool(body.es_identificador),
+            es_primaria=bool(body.es_primaria),
             clase_id=c.id
         )
         db.add(a)
@@ -68,19 +71,23 @@ async def create_attribute(
         asyncio.create_task(realtime_events.notify_attribute_created(c.diagram_id, a))
         asyncio.create_task(realtime_events.notify_class_updated(c.diagram_id, c))
 
+        # ✅ devolver con los nombres del schema (name, type, required, es_primaria)
         return AtributoOut(
             id=a.id,
             name=a.nombre,
             type=a.tipo,
             required=a.requerido,
-            es_identificador=a.es_identificador
+            es_primaria=a.es_primaria
         )
+
     except Exception as e:
         logger.error(f"❌ Error creando atributo -> class_id={class_id}, user={me.id}, error={str(e)}")
         raise
 
 
+# ===============================
 # 🔹 Actualizar atributo
+# ===============================
 @router.patch("/attributes/{attr_id}", response_model=AtributoOut)
 async def update_attribute(
     attr_id: UUID,
@@ -107,8 +114,8 @@ async def update_attribute(
             a.tipo = body.type
         if body.required is not None:
             a.requerido = body.required
-        if body.es_identificador is not None:
-            a.es_identificador = body.es_identificador
+        if body.es_primaria is not None:
+            a.es_primaria = body.es_primaria
 
         db.commit()
         db.refresh(a)
@@ -121,17 +128,19 @@ async def update_attribute(
 
         return AtributoOut(
             id=a.id,
-            name=a.nombre,
-            type=a.tipo,
-            required=a.requerido,
-            es_identificador=a.es_identificador
+            nombre=a.nombre,
+            tipo=a.tipo,
+            requerido=a.requerido,
+            es_primaria=a.es_primaria
         )
     except Exception as e:
         logger.error(f"❌ Error actualizando atributo -> attr_id={attr_id}, error={str(e)}")
         raise
 
 
+# ===============================
 # 🔹 Eliminar atributo
+# ===============================
 @router.delete("/attributes/{attr_id}", response_model=dict)
 async def delete_attribute(
     attr_id: UUID,
