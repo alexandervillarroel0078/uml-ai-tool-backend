@@ -14,11 +14,15 @@ class AtributoCreate(BaseModel):
     es_primaria: bool = False
     
 class AtributoUpdate(BaseModel):
-    name: Optional[str] = Field(default=None, alias="nombre")
-    type: Optional[str] = Field(default=None, alias="tipo")
-    required: Optional[bool] = Field(default=None, alias="requerido")
+    # name: Optional[str] = Field(default=None, alias="nombre")
+    # type: Optional[str] = Field(default=None, alias="tipo")
+    # required: Optional[bool] = Field(default=None, alias="requerido")
+    # es_primaria: Optional[bool] = None
+    name: Optional[str] = None
+    type: Optional[str] = None
+    required: Optional[bool] = None
     es_primaria: Optional[bool] = None
-
+    
 class AtributoOut(BaseModel):
     id: UUID
     name: str = Field(alias="nombre")
