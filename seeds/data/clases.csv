@@ -1,0 +1,11 @@
+id,diagram_title,nombre,x_grid,y_grid,w_grid,h_grid,z_index
+00000000-0000-0000-0000-00000000b006,ERP Empresarial - Relaciones completas,Producto,53,53,12,10,1
+00000000-0000-0000-0000-00000000b001,ERP Empresarial - Relaciones completas,Usuario,26,0,12,10,1
+00000000-0000-0000-0000-00000000b004,ERP Empresarial - Relaciones completas,Cliente,26,13,12,10,1
+00000000-0000-0000-0000-00000000b002,ERP Empresarial - Relaciones completas,Rol,50,0,12,10,1
+00000000-0000-0000-0000-00000000b009,ERP Empresarial - Relaciones completas,Factura,53,23,12,10,1
+00000000-0000-0000-0000-00000000b007,ERP Empresarial - Relaciones completas,Pedido,53,33,12,10,1
+00000000-0000-0000-0000-00000000b008,ERP Empresarial - Relaciones completas,DetallePedido,53,43,12,10,1
+00000000-0000-0000-0000-00000000b005,ERP Empresarial - Relaciones completas,Departamento,1,1,12,10,1
+00000000-0000-0000-0000-00000000b003,ERP Empresarial - Relaciones completas,Empleado,1,13,12,10,1
+00000000-0000-0000-0000-00000000b010,ERP Empresarial - Relaciones completas,Proyecto,1,25,12,10,1

@@ -1,8 +1,8 @@
 """init schema
 
-Revision ID: e77292959eb7
+Revision ID: c94f9c1d677e
 Revises: 
-Create Date: 2025-11-02 11:09:33.626043
+Create Date: 2025-11-03 12:50:31.530398
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'e77292959eb7'
+revision: str = 'c94f9c1d677e'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -54,6 +54,14 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_clase_diagram_id'), 'clase', ['diagram_id'], unique=False)
+    op.create_table('diagram_collaborator',
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('diagram_id', sa.UUID(), nullable=False),
+    sa.Column('added_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.ForeignKeyConstraint(['diagram_id'], ['diagram.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('user_id', 'diagram_id')
+    )
     op.create_table('atributo',
     sa.Column('id', sa.UUID(), nullable=False),
     sa.Column('nombre', sa.String(length=120), nullable=False),
@@ -104,6 +112,7 @@ def downgrade() -> None:
     op.drop_table('relacion')
     op.drop_table('metodo')
     op.drop_table('atributo')
+    op.drop_table('diagram_collaborator')
     op.drop_index(op.f('ix_clase_diagram_id'), table_name='clase')
     op.drop_table('clase')
     op.drop_table('diagram')

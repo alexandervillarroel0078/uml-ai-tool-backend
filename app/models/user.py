@@ -1,14 +1,24 @@
-from sqlalchemy.orm import Mapped, mapped_column
+# app/models/user.py
+from sqlalchemy.orm import Mapped, mapped_column, relationship   # 👈 aquí agregamos relationship
 from sqlalchemy import String, Boolean, DateTime, func, Enum, text
 import datetime, enum
+from typing import List
 
 from ..db import Base
 
+
+# =========================
+# Enumeración de roles
+# =========================
 class Role(str, enum.Enum):
     admin = "admin"
     editor = "editor"
     viewer = "viewer"
 
+
+# =========================
+# Modelo User
+# =========================
 class User(Base):
     __tablename__ = "user"
 
@@ -29,4 +39,16 @@ class User(Base):
     )
     updated_at: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
+    )
+
+    # =========================
+    # Relaciones
+    # =========================
+
+    # Diagramas creados por el usuario (dueño)
+    diagrams: Mapped[List["Diagram"]] = relationship(back_populates="owner")
+
+    # Diagramas compartidos con el usuario (colaboraciones)
+    shared_diagrams: Mapped[List["DiagramCollaborator"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
     )

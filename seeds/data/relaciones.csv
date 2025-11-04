@@ -1,0 +1,12 @@
+diagram_title,clase_origen,clase_destino,tipo,etiqueta,mult_origen_min,mult_origen_max,mult_destino_min,mult_destino_max
+ERP Empresarial - Relaciones completas,Usuario,Empleado,INHERITANCE,hereda,1,1,1,1
+ERP Empresarial - Relaciones completas,Usuario,Cliente,INHERITANCE,hereda,1,1,1,1
+ERP Empresarial - Relaciones completas,Usuario,Rol,ASSOCIATION,tiene,0,*,0,*
+ERP Empresarial - Relaciones completas,Departamento,Empleado,AGGREGATION,empleados,1,1,1,*
+ERP Empresarial - Relaciones completas,Empleado,Empleado,ASSOCIATION,jefe/subordinados,0,1,0,*
+ERP Empresarial - Relaciones completas,Proyecto,Proyecto,ASSOCIATION,relacionado_con,0,*,0,*
+ERP Empresarial - Relaciones completas,Pedido,DetallePedido,COMPOSITION,detalles,1,1,1,*
+ERP Empresarial - Relaciones completas,Cliente,Pedido,ASSOCIATION,realiza,1,1,0,*
+ERP Empresarial - Relaciones completas,DetallePedido,Producto,ASSOCIATION,producto,0,*,1,1
+ERP Empresarial - Relaciones completas,Factura,Pedido,DEPENDENCY,usa,1,1,1,1
+ERP Empresarial - Relaciones completas,Empleado,Proyecto,ASSOCIATION,participa_en,0,*,0,*

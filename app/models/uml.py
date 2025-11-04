@@ -1,3 +1,4 @@
+# app/models/uml.py
 from sqlalchemy import String, Boolean, ForeignKey, Enum, DateTime, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -15,7 +16,6 @@ class RelType(str, enum.Enum):
     INHERITANCE = "INHERITANCE"
     DEPENDENCY = "DEPENDENCY"
 
-
 # =========================
 # Diagrama
 # =========================
@@ -25,12 +25,25 @@ class Diagram(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title: Mapped[str] = mapped_column(String(200), nullable=False)
     owner_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
-    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    updated_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
+    )
 
-    # Relaciones
-    classes: Mapped[List["Clase"]] = relationship(back_populates="diagram", cascade="all, delete-orphan", passive_deletes=True)
-    relations: Mapped[List["Relacion"]] = relationship(back_populates="diagram", cascade="all, delete-orphan", passive_deletes=True)
+    # Relaciones existentes
+    classes: Mapped[List["Clase"]] = relationship(
+        back_populates="diagram", cascade="all, delete-orphan", passive_deletes=True
+    )
+    relations: Mapped[List["Relacion"]] = relationship(
+        back_populates="diagram", cascade="all, delete-orphan", passive_deletes=True
+    )
 
+    # 🔹 Propietario (dueño del diagrama)
+    owner: Mapped["User"] = relationship(back_populates="diagrams")
+
+    # 🔹 Colaboradores (usuarios con los que se comparte el diagrama)
+    collaborators: Mapped[List["DiagramCollaborator"]] = relationship(
+        back_populates="diagram", cascade="all, delete-orphan"
+    )
 
 # =========================
 # Clase UML
@@ -112,7 +125,9 @@ class Atributo(Base):
     nombre: Mapped[str] = mapped_column(String(120), nullable=False)
     tipo: Mapped[str] = mapped_column(String(60), default="string")
     requerido: Mapped[bool] = mapped_column(Boolean, default=False)
-    
+    #para la llave primaria de la clase
+    es_primaria: Mapped[bool] = mapped_column(Boolean, default=False)
+
     clase_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("clase.id", ondelete="CASCADE"), nullable=False)
     clase: Mapped["Clase"] = relationship(back_populates="atributos")
 

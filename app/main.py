@@ -1,4 +1,5 @@
 # backend/app/main.py
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import ALLOWED_ORIGINS, settings
@@ -6,6 +7,16 @@ from app.routers import auth as auth_router
 from app.routers import diagramas, classes, atributos, metodo, relacion, realtime 
 from app.routers import classes as classes_router
 from app.routers import export 
+
+# ===================================
+# 🔹 Configuración de logging global
+# ===================================
+logging.basicConfig(
+    level=logging.INFO,  # Cambiá a DEBUG si querés más detalle
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+
+
 app = FastAPI(title="UML AI Tool API")
 print("🚀 ALLOWED_ORIGINS:", ALLOWED_ORIGINS)
 cors_origins = ["*"] if settings.DEBUG else ALLOWED_ORIGINS
