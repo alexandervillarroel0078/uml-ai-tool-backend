@@ -23,7 +23,7 @@ class DiagramOut(BaseModel):
     owner_id: int
     updated_at: datetime
     collaborators: list[DiagramCollaboratorOut]
-    is_owner: bool  # 👈 Nuevo campo
+    is_owner: bool = None # 👈 Nuevo campo
 
     model_config = {"from_attributes": True}
 
