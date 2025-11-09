@@ -46,3 +46,12 @@ sistema gestion empresarial,Factura,id,UUID,True,True
 sistema gestion empresarial,Factura,fechaEmision,Date,True,False
 sistema gestion empresarial,Factura,montoTotal,Decimal,True,False
 sistema gestion empresarial,Factura,metodoPago,String,True,False
+
+sistema gestion empresarial,Categoria,id,UUID,True,True
+sistema gestion empresarial,Categoria,nombre,String,True,False
+sistema gestion empresarial,Categoria,descripcion,String,False,False
+
+sistema gestion empresarial,Curso,id,UUID,True,True
+sistema gestion empresarial,Curso,nombre,String,True,False
+sistema gestion empresarial,Curso,nivel,String,True,False
+sistema gestion empresarial,Curso,duracion,Integer,False,False

@@ -24,7 +24,7 @@ from exporters.generators.project_builder import build_project
 
 router = APIRouter(prefix="/diagrams", tags=["export"])
 
-
+#metodo que arma el json del diagrama
 def build_diagram_dict(diagram: Diagram) -> dict:
     return {
         "id": str(diagram.id),
@@ -34,7 +34,7 @@ def build_diagram_dict(diagram: Diagram) -> dict:
                 "id": str(c.id),
                 "name": c.nombre,
                 "attributes": [
-                    {"name": a.nombre, "type": a.tipo, "required": a.requerido}
+                    {"name": a.nombre, "type": a.tipo, "required": a.requerido,"es_primaria": a.es_primaria}
                     for a in c.atributos
                 ],
                 "methods": [

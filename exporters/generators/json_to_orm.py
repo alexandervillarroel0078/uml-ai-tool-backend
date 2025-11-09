@@ -63,57 +63,6 @@ def generate_entity(class_def: dict):
    # Render con Jinja2
     template = env.get_template("model.java.j2")
     return template.render(package="com.test", class_name=class_name, attributes=attributes)
-   # # ========================
-    # # Cabecera de la clase
-    # # ========================
-    # lines = []
-    # lines.append("import jakarta.persistence.*;")
-    # lines.append("import java.time.*;")
-    # lines.append("")
-    # lines.append("@Entity")
-    # lines.append(f"public class {class_name} " + "{")
-    # lines.append("")
-
-    # # ========================
-    # # Definición de atributos
-    # # ========================
-    # for attr in attributes:
-    #     attr_name = attr["name"]
-    #     attr_type = map_type(attr["type"])
-
-    #     if attr_name.lower() == "id":  # Primary Key
-    #         lines.append("    @Id")
-    #         lines.append("    @GeneratedValue(strategy = GenerationType.IDENTITY)")
-    #     lines.append(f"    private {attr_type} {attr_name};")
-    #     lines.append("")
-
-    # # ========================
-    # # Getters y Setters
-    # # ========================
-    # for attr in attributes:
-    #     attr_name = attr["name"]
-    #     attr_type = map_type(attr["type"])
-    #     method_name = attr_name[0].upper() + attr_name[1:]
-
-    #     # Getter
-    #     lines.append(f"    public {attr_type} get{method_name}() " + "{")
-    #     lines.append(f"        return {attr_name};")
-    #     lines.append("    }")
-    #     lines.append("")
-
-    #     # Setter
-    #     lines.append(f"    public void set{method_name}({attr_type} {attr_name}) " + "{")
-    #     lines.append(f"        this.{attr_name} = {attr_name};")
-    #     lines.append("    }")
-    #     lines.append("")
-
-    # # ========================
-    # # Cierre de la clase
-    # # ========================
-    # lines.append("}")
-
-    # return "\n".join(lines)
-
 
 # ========================
 # Función principal
