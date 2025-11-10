@@ -16,6 +16,7 @@ from app.routers import diagramas, classes, atributos, metodo, relacion, realtim
 from app.routers import classes as classes_router
 from app.routers import export 
 from app.routers import imagen_uml
+from app.routers import ia_edicion
 # ===================================
 # 🔹 Configuración de logging global
 # ===================================
@@ -54,3 +55,4 @@ app.include_router(export.router)
 # Router WebSocket (colaboración en tiempo real)
 app.include_router(realtime.router)
 app.include_router(imagen_uml.router)
+app.include_router(ia_edicion.router)
