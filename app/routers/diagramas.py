@@ -15,6 +15,7 @@ from fastapi.encoders import jsonable_encoder
 from app.db import get_db
 from app.core.security import get_current_user
 from app.models.user import User
+from pydantic import BaseModel
 from app.models.uml import Clase, Relacion
 from app.models.uml import Diagram
 from app.models.collaborator import DiagramCollaborator
@@ -248,25 +249,61 @@ def get_diagram_full(
         "is_owner": (d.owner_id == me.id),
     }
 
+class ShareRequest(BaseModel):
+    email: str
+
 #  Compartir un diagrama con otro usuario
+# @router.post("/{diagram_id}/share")
+# def share_diagram(
+#     diagram_id: UUID,
+#     user_id: int,
+#     db: Session = Depends(get_db),
+#     me: User = Depends(get_current_user),
+# ):
+#     diagram = db.query(Diagram).filter(Diagram.id == diagram_id, Diagram.owner_id == me.id).first()
+#     if not diagram:
+#         raise HTTPException(status_code=404, detail="Diagrama no encontrado o no te pertenece")
+
+#     exists = db.query(DiagramCollaborator).filter_by(diagram_id=diagram_id, user_id=user_id).first()
+#     if exists:
+#         raise HTTPException(status_code=400, detail="El usuario ya es colaborador")
+
+#     collab = DiagramCollaborator(user_id=user_id, diagram_id=diagram_id)
+#     db.add(collab)
+#     db.commit()
+#     return {"message": "✅ Diagrama compartido correctamente", "diagram_id": str(diagram_id), "user_id": user_id}
+
+
 @router.post("/{diagram_id}/share")
 def share_diagram(
     diagram_id: UUID,
-    user_id: int,
+    body: ShareRequest,
     db: Session = Depends(get_db),
     me: User = Depends(get_current_user),
 ):
+    log.info(f"🤝 Compartir diagrama -> {diagram_id} con {body.email}")
+
+    # Buscar diagrama
     diagram = db.query(Diagram).filter(Diagram.id == diagram_id, Diagram.owner_id == me.id).first()
     if not diagram:
         raise HTTPException(status_code=404, detail="Diagrama no encontrado o no te pertenece")
 
-    exists = db.query(DiagramCollaborator).filter_by(diagram_id=diagram_id, user_id=user_id).first()
+    # Buscar usuario destinatario
+    target_user = db.query(User).filter(User.email == body.email).first()
+    if not target_user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    # Verificar si ya es colaborador
+    exists = db.query(DiagramCollaborator).filter_by(
+        diagram_id=diagram_id, user_id=target_user.id
+    ).first()
     if exists:
         raise HTTPException(status_code=400, detail="El usuario ya es colaborador")
 
-    collab = DiagramCollaborator(user_id=user_id, diagram_id=diagram_id)
+    # Crear colaboración
+    collab = DiagramCollaborator(user_id=target_user.id, diagram_id=diagram_id)
     db.add(collab)
     db.commit()
-    return {"message": "✅ Diagrama compartido correctamente", "diagram_id": str(diagram_id), "user_id": user_id}
 
-
+    log.info(f"✅ Diagrama {diagram_id} compartido con {target_user.email}")
+    return {"message": "✅ Diagrama compartido correctamente", "diagram_id": str(diagram_id), "email": target_user.email}
