@@ -70,3 +70,4 @@ exporters/output/
 *.bak
 *.swp
 *.swo
+.env

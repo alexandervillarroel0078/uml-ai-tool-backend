@@ -2,12 +2,20 @@
 import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+print("🔑 OPENAI_API_KEY cargada:", os.getenv("OPENAI_API_KEY")[:10], "...")  # ✅ para verificar
+
+
 from app.core.config import ALLOWED_ORIGINS, settings
 from app.routers import auth as auth_router
 from app.routers import diagramas, classes, atributos, metodo, relacion, realtime 
 from app.routers import classes as classes_router
 from app.routers import export 
-
+from app.routers import imagen_uml
 # ===================================
 # 🔹 Configuración de logging global
 # ===================================
@@ -45,3 +53,4 @@ app.include_router(relacion.router)
 app.include_router(export.router)
 # Router WebSocket (colaboración en tiempo real)
 app.include_router(realtime.router)
+app.include_router(imagen_uml.router)

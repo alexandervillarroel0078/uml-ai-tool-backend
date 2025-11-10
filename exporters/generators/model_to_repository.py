@@ -22,6 +22,12 @@ def generate_repositories(json_path, output_dir, templates_dir="../templates"):
 
         code = template.render(class_name=class_name)
 
+        # 🚀 Caso especial: si es la entidad Usuario, agregar findByEmail()
+        if class_name.lower() == "usuario":
+            extra = "\n    {{ class_name }} findByEmail(String email);\n"
+            code = code.rstrip("}") + extra.replace("{{ class_name }}", class_name) + "}\n"
+
+
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(code)
 

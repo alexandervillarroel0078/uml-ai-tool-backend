@@ -1,0 +1,30 @@
+package {{ package }}.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import {{ package }}.dtos.AuthRequest;
+import {{ package }}.dtos.AuthResponse;
+import {{ package }}.models.Usuario;
+import {{ package }}.repositories.UsuarioRepository;
+import {{ package }}.security.JwtService;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    @Autowired
+    private UsuarioRepository usuarioRepo;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody AuthRequest req) {
+        Usuario user = usuarioRepo.findByEmail(req.getEmail());
+        if (user != null && user.getPassword().equals(req.getPassword())) {
+            String token = jwtService.generateToken(user.getEmail());
+            return new AuthResponse(token);
+        }
+        throw new RuntimeException("Credenciales inválidas");
+    }
+}
