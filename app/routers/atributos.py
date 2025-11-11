@@ -1,4 +1,3 @@
-
 # app/routers/atributos.py
 from uuid import UUID
 import logging, asyncio
@@ -17,8 +16,9 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/diagrams", tags=["attributes"])
 
-
+# ===============================
 # 🔹 Listar atributos
+# ===============================
 @router.get("/classes/{class_id}/attributes", response_model=list[AtributoOut])
 def list_attributes(
     class_id: UUID,
@@ -29,10 +29,21 @@ def list_attributes(
     c = get_my_class(db, me, class_id)
     items = db.query(Atributo).filter(Atributo.clase_id == c.id).all()
     logger.info(f"✅ {len(items)} atributos encontrados en class_id={class_id}")
-    return [AtributoOut(id=i.id, name=i.nombre, type=i.tipo, required=i.requerido) for i in items]
+    return [
+        AtributoOut(
+            id=i.id,
+            nombre=i.nombre,
+            tipo=i.tipo,
+            requerido=i.requerido,
+            es_primaria=i.es_primaria
+        )
+        for i in items
+    ]
 
 
+# ===============================
 # 🔹 Crear atributo
+# ===============================
 @router.post("/classes/{class_id}/attributes", response_model=AtributoOut, status_code=status.HTTP_201_CREATED)
 async def create_attribute(
     class_id: UUID,
@@ -44,20 +55,39 @@ async def create_attribute(
     c = get_my_class(db, me, class_id)
 
     try:
-        a = Atributo(nombre=body.name, tipo=body.type, requerido=bool(body.required), clase_id=c.id)
-        db.add(a); db.commit(); db.refresh(a)
+        a = Atributo(
+            nombre=body.name,
+            tipo=body.type,
+            requerido=bool(body.required),
+            es_primaria=bool(body.es_primaria),
+            clase_id=c.id
+        )
+        db.add(a)
+        db.commit()
+        db.refresh(a)
         logger.info(f"✅ Atributo creado -> attr_id={a.id}, class_id={c.id}")
 
         # 🔔 Notificar en tiempo real
         asyncio.create_task(realtime_events.notify_attribute_created(c.diagram_id, a))
         asyncio.create_task(realtime_events.notify_class_updated(c.diagram_id, c))
-        return AtributoOut(id=a.id, name=a.nombre, type=a.tipo, required=a.requerido)
+
+        # ✅ devolver con los nombres del schema (name, type, required, es_primaria)
+        return AtributoOut(
+            id=a.id,
+            name=a.nombre,
+            type=a.tipo,
+            required=a.requerido,
+            es_primaria=a.es_primaria
+        )
+
     except Exception as e:
         logger.error(f"❌ Error creando atributo -> class_id={class_id}, user={me.id}, error={str(e)}")
         raise
 
 
+# ===============================
 # 🔹 Actualizar atributo
+# ===============================
 @router.patch("/attributes/{attr_id}", response_model=AtributoOut)
 async def update_attribute(
     attr_id: UUID,
@@ -78,24 +108,39 @@ async def update_attribute(
         raise HTTPException(404, "Atributo no encontrado")
 
     try:
-        if body.name is not None: a.nombre = body.name
-        if body.type is not None: a.tipo = body.type
-        if body.required is not None: a.requerido = body.required
+        if body.name is not None:
+            a.nombre = body.name
+        if body.type is not None:
+            a.tipo = body.type
+        if body.required is not None:
+            a.requerido = body.required
+        if body.es_primaria is not None:
+            a.es_primaria = body.es_primaria
 
-        db.commit(); db.refresh(a)
+        db.commit()
+        db.refresh(a)
         c = a.clase
         logger.info(f"✅ Atributo actualizado -> attr_id={a.id}, class_id={c.id}")
 
         # 🔔 Notificar en tiempo real
         asyncio.create_task(realtime_events.notify_attribute_updated(c.diagram_id, a))
         asyncio.create_task(realtime_events.notify_class_updated(c.diagram_id, c))
-        return AtributoOut(id=a.id, name=a.nombre, type=a.tipo, required=a.requerido)
+
+        return AtributoOut(
+            id=a.id,
+            nombre=a.nombre,
+            tipo=a.tipo,
+            requerido=a.requerido,
+            es_primaria=a.es_primaria
+        )
     except Exception as e:
         logger.error(f"❌ Error actualizando atributo -> attr_id={attr_id}, error={str(e)}")
         raise
 
 
+# ===============================
 # 🔹 Eliminar atributo
+# ===============================
 @router.delete("/attributes/{attr_id}", response_model=dict)
 async def delete_attribute(
     attr_id: UUID,
@@ -117,12 +162,14 @@ async def delete_attribute(
     try:
         c = a.clase
         attr_id = a.id
-        db.delete(a); db.commit()
+        db.delete(a)
+        db.commit()
         logger.info(f"✅ Atributo eliminado -> attr_id={attr_id}, class_id={c.id}")
 
         # 🔔 Notificar en tiempo real
-        asyncio.create_task(realtime_events.notify_attribute_deleted(c.diagram_id,  attr_id, c.id))
+        asyncio.create_task(realtime_events.notify_attribute_deleted(c.diagram_id, attr_id, c.id))
         asyncio.create_task(realtime_events.notify_class_updated(c.diagram_id, c))
+
         return {"id": str(attr_id), "class_id": str(c.id)}
     except Exception as e:
         logger.error(f"❌ Error eliminando atributo -> attr_id={attr_id}, error={str(e)}")

@@ -1,0 +1,135 @@
+HERENCIA
+USUARIO – EMPLEADO – CLIENTE
+USUARIO
+PK
+id
+
+EMPLEADO
+PK | FK
+id | id_usuario
+
+CLIENTE
+PK | FK
+id | id_usuario
+
+=======================================================
+
+AGREGACIÓN
+DEPARTAMENTO – EMPLEADO
+
+(1:N → un departamento tiene muchos empleados)
+
+DEPARTAMENTO
+PK
+id
+
+EMPLEADO
+PK | FK
+id | departamento_id
+
+=======================================================
+ASOCIACION
+EMPLEADO – PROYECTO
+
+(N:M → un empleado participa en varios proyectos)
+
+EMPLEADO
+PK
+id
+
+
+EMPLEADO_PROYECTO
+FK | FK
+empleado_id | proyecto_id
+
+PROYECTO
+PK
+id
+
+=======================================================
+RECURSIVA
+EMPLEADO (JEFE – SUBORDINADO)
+
+(1:N → un empleado puede ser jefe de varios empleados)
+
+EMPLEADO
+PK | FK
+id | jefe_id
+
+=======================================================
+ASOCIACION
+USUARIO – ROL
+(N:M → un usuario puede tener varios roles)
+
+USUARIO
+PK
+id
+
+USUARIO_ROL
+FK | FK
+usuario_id | rol_id
+
+ROL
+PK
+id
+
+=======================================================
+
+ASOCIASICIÓN
+CLIENTE – PEDIDO
+
+(1:N → un cliente puede realizar varios pedidos)
+
+CLIENTE
+PK
+id
+
+PEDIDO
+PK | FK
+id | cliente_id
+
+=======================================================
+COMPOSICION
+PEDIDO – DETALLEPEDIDO
+
+(1:N → un pedido tiene muchos detalles)
+
+PEDIDO
+PK
+id
+
+DETALLE_PEDIDO
+PK | FK
+id | pedido_id
+
+=======================================================
+
+ASOCIACION
+DETALLEPEDIDO – PRODUCTO
+
+(N:1 → cada detalle hace referencia a un producto)
+
+DETALLE_PEDIDO
+PK | FK
+id | producto_id
+
+PRODUCTO
+PK
+id
+
+=======================================================
+DEPENDENCIA
+PEDIDO – FACTURA
+
+(1:1 → cada pedido genera una factura)
+
+PEDIDO
+PK
+id
+
+FACTURA
+PK | FK
+id | pedido_id
+
+=======================================================
+

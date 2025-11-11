@@ -1,5 +1,4 @@
-
-# postman_generator.py
+#exporters/generators/postman_generator.py
 import os, json, random
 from datetime import datetime, timedelta
 from exporters.generators.json_to_relations import build_relations, to_camel
@@ -21,7 +20,7 @@ def example_for(attr_type: str):
     # default string
     return "Texto de ejemplo"
 
-# 🔹 Construir URL en formato Postman (raw, protocol, host, port, path)
+# 🔹 Construir URL en formato Postman
 def build_url(url_raw: str):
     protocol = "http"
     host = ["localhost"]
@@ -114,5 +113,40 @@ def generate_postman(json_path, output_dir):
         file_path = os.path.join(test_bodies_dir, f"{class_name}.json")
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(model_collection, f, indent=2, ensure_ascii=False)
-
         print(f"📄 CRUD Postman generado: {file_path}")
+
+    # 🔐 Si existen las clases Usuario y Rol, agregar sección de autenticación
+    class_names = [c["name"].lower() for c in diagram["classes"]]
+    if "usuario" in class_names and "rol" in class_names:
+        print("🔒 Agregando endpoints de autenticación al Postman...")
+
+        auth_request = {
+            "info": {
+                "name": "Auth (Login)",
+                "_postman_id": "12345678-aaaa-bbbb-cccc-123456789000",
+                "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+            },
+            "item": [
+                {
+                    "name": "Login Usuario",
+                    "request": {
+                        "method": "POST",
+                        "header": [{"key": "Content-Type", "value": "application/json"}],
+                        "body": {
+                            "mode": "raw",
+                            "raw": json.dumps({
+                                "email": "usuario@demo.com",
+                                "password": "1234"
+                            }, indent=2, ensure_ascii=False)
+                        },
+                        "url": build_url("http://localhost:8080/auth/login")
+                    }
+                }
+            ]
+        }
+
+        # 📂 Guardar archivo adicional para login
+        auth_file = os.path.join(test_bodies_dir, "Auth_Login.json")
+        with open(auth_file, "w", encoding="utf-8") as f:
+            json.dump(auth_request, f, indent=2, ensure_ascii=False)
+        print(f"📄 Endpoint Login generado: {auth_file}")

@@ -1,0 +1,13 @@
+id,diagram_title,clase_origen,clase_destino,tipo,etiqueta,mult_origen_min,mult_origen_max,mult_destino_min,mult_destino_max,src_anchor,dst_anchor
+a57cf646-ea35-43d6-8360-776a4fe2ad5f,sistema gestion empresarial,Empleado,Departamento,AGGREGATION,empleados,1,*,1,1,top,bottom
+b6b0382a-4ff6-4645-8b1e-1569d8d56c38,sistema gestion empresarial,DetallePedido,Pedido,COMPOSITION,detalles,1,*,1,1,top,bottom
+22d0c173-4801-4e64-a260-6ad38c461aaa,sistema gestion empresarial,Cliente,Pedido,ASSOCIATION,realiza,1,1,0,*,right,left
+c1b3864e-472a-4641-a790-94961e980999,sistema gestion empresarial,DetallePedido,Producto,ASSOCIATION,producto,0,*,1,1,left,right
+0f22c517-e64b-48ca-a16c-2ba575d209ab,sistema gestion empresarial,Factura,Pedido,DEPENDENCY,usa,1,1,1,1,right,top
+52337264-cfe3-447e-afeb-c52bf13b33a2,sistema gestion empresarial,Empleado,Proyecto,ASSOCIATION,participa_en,0,*,0,*,bottom,top
+1b6869e9-c50c-43b9-8d45-6c6655b12109,sistema gestion empresarial,Empleado,Usuario,INHERITANCE,hereda,1,1,1,1,top,bottom
+7781a317-8db0-45ca-8c4c-fa34831c8af5,sistema gestion empresarial,Cliente,Usuario,INHERITANCE,hereda,1,1,1,1,top,bottom
+01a38ab8-fa92-41c1-b322-47c96f9299b3,sistema gestion empresarial,Usuario,Rol,ASSOCIATION,tiene,0,*,0,*,right,left
+
+7e91e66f-6d8e-4cb5-b4cb-3c2e1cfaa011,sistema gestion empresarial,Categoria,Categoria,ASSOCIATION,subcategorias,0,*,0,1,right,bottom
+ce8d9b7f-8e44-4e6d-93c7-2a1dc0e3f222,sistema gestion empresarial,Curso,Curso,ASSOCIATION,relacionados,0,*,0,*,right,bottom

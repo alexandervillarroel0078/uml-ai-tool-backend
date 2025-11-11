@@ -1,0 +1,57 @@
+diagram_title,clase_nombre,nombre,tipo,requerido,es_primaria
+sistema gestion empresarial,Usuario,id,UUID,True,True
+sistema gestion empresarial,Usuario,nombre,String,True,False
+sistema gestion empresarial,Usuario,email,String,True,False
+sistema gestion empresarial,Usuario,password,String,True,False
+
+sistema gestion empresarial,Empleado,id,UUID,True,True
+sistema gestion empresarial,Empleado,cargo,String,True,False
+sistema gestion empresarial,Empleado,salario,Decimal,True,False
+sistema gestion empresarial,Empleado,fechaContratacion,Date,False,False
+
+sistema gestion empresarial,Cliente,id,UUID,True,True
+sistema gestion empresarial,Cliente,nombreEmpresa,String,True,False
+sistema gestion empresarial,Cliente,telefono,String,False,False
+sistema gestion empresarial,Cliente,direccion,String,False,False
+
+sistema gestion empresarial,Departamento,id,UUID,True,True
+sistema gestion empresarial,Departamento,nombre,String,True,False
+sistema gestion empresarial,Departamento,ubicacion,String,False,False
+
+sistema gestion empresarial,Producto,id,UUID,True,True
+sistema gestion empresarial,Producto,nombre,String,True,False
+sistema gestion empresarial,Producto,precio,Decimal,True,False
+sistema gestion empresarial,Producto,stock,Integer,True,False
+
+sistema gestion empresarial,Pedido,id,UUID,True,True
+sistema gestion empresarial,Pedido,fecha,Date,True,False
+sistema gestion empresarial,Pedido,estado,String,True,False
+sistema gestion empresarial,Pedido,total,Decimal,True,False
+
+sistema gestion empresarial,DetallePedido,id,UUID,True,True
+sistema gestion empresarial,DetallePedido,cantidad,Integer,True,False
+sistema gestion empresarial,DetallePedido,subtotal,Decimal,True,False
+
+sistema gestion empresarial,Rol,id,UUID,True,True
+sistema gestion empresarial,Rol,nombre,String,True,False
+sistema gestion empresarial,Rol,descripcion,String,False,False
+
+sistema gestion empresarial,Proyecto,id,UUID,True,True
+sistema gestion empresarial,Proyecto,nombre,String,True,False
+sistema gestion empresarial,Proyecto,fechaInicio,Date,True,False
+sistema gestion empresarial,Proyecto,fechaFin,Date,False,False
+sistema gestion empresarial,Proyecto,presupuesto,Decimal,False,False
+
+sistema gestion empresarial,Factura,id,UUID,True,True
+sistema gestion empresarial,Factura,fechaEmision,Date,True,False
+sistema gestion empresarial,Factura,montoTotal,Decimal,True,False
+sistema gestion empresarial,Factura,metodoPago,String,True,False
+
+sistema gestion empresarial,Categoria,id,UUID,True,True
+sistema gestion empresarial,Categoria,nombre,String,True,False
+sistema gestion empresarial,Categoria,descripcion,String,False,False
+
+sistema gestion empresarial,Curso,id,UUID,True,True
+sistema gestion empresarial,Curso,nombre,String,True,False
+sistema gestion empresarial,Curso,nivel,String,True,False
+sistema gestion empresarial,Curso,duracion,Integer,False,False
