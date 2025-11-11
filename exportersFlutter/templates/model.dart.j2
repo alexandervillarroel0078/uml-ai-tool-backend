@@ -1,0 +1,19 @@
+class {{ class_name }} {
+  {% for a in attributes %}
+  final {{ a.type }} {{ a.name }};
+  {% endfor %}
+
+  {{ class_name }}({ {% for a in attributes %}required this.{{ a.name }}, {% endfor %} });
+
+  factory {{ class_name }}.fromJson(Map<String, dynamic> json) => {{ class_name }}(
+    {% for a in attributes %}
+    {{ a.name }}: json['{{ a.name }}'],
+    {% endfor %}
+  );
+
+  Map<String, dynamic> toJson() => {
+    {% for a in attributes %}
+    '{{ a.name }}': {{ a.name }},
+    {% endfor %}
+  };
+}

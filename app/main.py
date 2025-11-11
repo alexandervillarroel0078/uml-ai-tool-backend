@@ -17,6 +17,7 @@ from app.routers import classes as classes_router
 from app.routers import export 
 from app.routers import imagen_uml
 from app.routers import ia_edicion
+from app.routers import flutter_export
 # ===================================
 # 🔹 Configuración de logging global
 # ===================================
@@ -56,3 +57,4 @@ app.include_router(export.router)
 app.include_router(realtime.router)
 app.include_router(imagen_uml.router)
 app.include_router(ia_edicion.router)
+app.include_router(flutter_export.router)

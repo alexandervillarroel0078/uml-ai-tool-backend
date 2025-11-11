@@ -3,10 +3,12 @@ package com.test.controllers;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.test.models.{{ class_name }};
 import com.test.services.{{ class_name }}Service;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/{{ class_name | lower }}s")
 public class {{ class_name }}Controller {

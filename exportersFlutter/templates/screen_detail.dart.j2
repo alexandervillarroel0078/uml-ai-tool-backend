@@ -1,0 +1,129 @@
+{% set class_lower = class_name|lower %}
+import 'package:flutter/material.dart';
+import '../services/api_service.dart';
+
+class {{ class_name }}DetailScreen extends StatefulWidget {
+  final Map<String, dynamic>? {{ class_lower }};
+  const {{ class_name }}DetailScreen({super.key, this.{{ class_lower }}});
+
+  @override
+  State<{{ class_name }}DetailScreen> createState() => _{{ class_name }}DetailScreenState();
+}
+
+class _{{ class_name }}DetailScreenState extends State<{{ class_name }}DetailScreen> {
+  // 🧩 Controladores de texto
+  {% for attr in attributes if attr.name != 'id' %}
+  final TextEditingController {{ attr.name }}Controller = TextEditingController();
+  {% endfor %}
+
+  // 🔗 Relaciones ManyToOne
+  {% for rel in relations if rel.tipo == 'ManyToOne' %}
+  List<dynamic> {{ rel.destino|lower }}s = [];
+  int? selected{{ rel.destino }}Id;
+  {% endfor %}
+
+  bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadRelations();
+
+    // Si se está editando, llenar los campos
+    if (widget.{{ class_lower }} != null) {
+      {% for attr in attributes if attr.name != 'id' %}
+      {{ attr.name }}Controller.text = widget.{{ class_lower }}!['{{ attr.name }}']?.toString() ?? '';
+      {% endfor %}
+      {% for rel in relations if rel.tipo == 'ManyToOne' %}
+      // Detectar si el backend devuelve objeto o id plano
+      final relValue{{ loop.index }} = widget.{{ class_lower }}!['{{ rel.destino|lower }}'];
+      if (relValue{{ loop.index }} is Map && relValue{{ loop.index }}['id'] != null) {
+        selected{{ rel.destino }}Id = relValue{{ loop.index }}['id'];
+      } else if (widget.{{ class_lower }}!['{{ rel.destino|lower }}_id'] != null) {
+        selected{{ rel.destino }}Id = widget.{{ class_lower }}!['{{ rel.destino|lower }}_id'];
+      }
+      {% endfor %}
+    }
+
+  }
+
+  // 🔄 Cargar datos relacionados (para Dropdowns)
+  Future<void> loadRelations() async {
+    {% for rel in relations if rel.tipo == 'ManyToOne' %}
+    {{ rel.destino|lower }}s = await ApiService().getData('api/{{ rel.destino|lower }}s') ?? [];
+    {% endfor %}
+    setState(() {});
+  }
+
+  // 💾 Guardar o actualizar entidad
+  Future<void> save{{ class_name }}() async {
+    setState(() => loading = true);
+
+    final data = {
+      {% for attr in attributes if attr.name != 'id' %}
+      "{{ attr.name }}": {{ attr.name }}Controller.text,
+      {% endfor %}
+      {% for rel in relations if rel.tipo == 'ManyToOne' %}
+      "{{ rel.destino|lower }}": {"id": selected{{ rel.destino }}Id},
+      {% endfor %}
+    };
+
+    if (widget.{{ class_lower }} == null) {
+      await ApiService().postData("api/{{ class_lower }}s", data);
+    } else {
+      final id = widget.{{ class_lower }}!["id"];
+      await ApiService().putData("api/{{ class_lower }}s/$id", data);
+    }
+
+    setState(() => loading = false);
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.{{ class_lower }} == null
+            ? "Nuevo {{ class_name }}"
+            : "Editar {{ class_name }}"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: ListView(
+          children: [
+            {% for attr in attributes if attr.name != 'id' %}
+            TextField(
+              controller: {{ attr.name }}Controller,
+              decoration: const InputDecoration(
+                labelText: "{{ attr.name | capitalize }}",
+              ),
+            ),
+            const SizedBox(height: 12),
+            {% endfor %}
+
+            {% for rel in relations if rel.tipo == 'ManyToOne' %}
+            DropdownButtonFormField<int>(
+              value: selected{{ rel.destino }}Id,
+              decoration: InputDecoration(labelText: "{{ rel.destino | capitalize }}"),
+              items: {{ rel.destino|lower }}s.map<DropdownMenuItem<int>>((item) {
+                final label = item["nombre"] ?? item["titulo"] ?? "ID: ${item["id"]}";
+                return DropdownMenuItem(value: item["id"], child: Text(label));
+              }).toList(),
+              onChanged: (v) => setState(() => selected{{ rel.destino }}Id = v),
+            ),
+            const SizedBox(height: 12),
+            {% endfor %}
+
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: loading ? null : save{{ class_name }},
+              child: loading
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const Text("Guardar"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

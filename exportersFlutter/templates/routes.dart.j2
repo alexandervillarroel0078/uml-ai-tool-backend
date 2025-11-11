@@ -1,0 +1,16 @@
+import 'package:flutter/material.dart';
+{% for c in diagram.classes %}
+import 'screens/{{ c.name|lower }}_list_screen.dart';
+import 'screens/{{ c.name|lower }}_detail_screen.dart';
+{% endfor %}
+import 'screens/login_screen.dart';
+import 'screens/home_screen.dart';
+
+final Map<String, WidgetBuilder> appRoutes = {
+  '/login': (context) => const LoginScreen(),
+  '/home': (context) => const HomeScreen(),
+  {% for c in diagram.classes %}
+  '/{{ c.name|lower }}List': (context) => const {{ c.name }}ListScreen(),
+  '/{{ c.name|lower }}Detail': (context) => const {{ c.name }}DetailScreen(),
+  {% endfor %}
+};
